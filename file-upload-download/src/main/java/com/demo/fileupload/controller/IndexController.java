@@ -11,9 +11,23 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 @Controller
 public class IndexController {
-
+  /**
+   * 普通文件上传下载示例页面
+   *
+   * @return index.html
+   */
   @GetMapping("/")
   public String index() {
     return "index";
+  }
+
+  /**
+   * 分块上传下载示例页面
+   *
+   * @return upload.html
+   */
+  @GetMapping("/upload")
+  public String upload() {
+    return "upload";
   }
 }

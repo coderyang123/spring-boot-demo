@@ -2,6 +2,6 @@ spring:
   servlet:
     multipart:
       enabled: true # 开启文件上传
-      location: C:\Users\10231\Pictures # 文件上传的路径
+      location: /Users/Adam/Code/IdeaProjects/spring-boot-demo/file-upload-download/upload/ # 文件上传的路径
       max-request-size: 200MB # 上传的总文件大小
       max-file-size: 50MB # 上传的单个文件大小

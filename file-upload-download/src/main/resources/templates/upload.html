@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+</head>
+<body>
+<h1>文件分片上传示例</h1>
+<form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" id="fileInput" name="file"/>
+    <button type="button" onclick="uploadFile()">Upload</button>
+</form>
+<div id="status"></div>
+
+<script>
+    async function uploadFile() {
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+        if (!file) {
+            alert('Please select a file to upload.');
+            return;
+        }
+
+        const chunkSize = 1024 * 1024; // 1MB
+        let start = 0;
+        let end = chunkSize;
+        let chunkNumber = 1;
+        const totalChunks = Math.ceil(file.size / chunkSize);
+        const identifier = new Date().getTime().toString();
+
+        while (start < file.size) {
+            const chunk = file.slice(start, end);
+            const formData = new FormData();
+            formData.append('file', chunk, file.name);
+            formData.append('chunkNumber', chunkNumber);
+            formData.append('totalChunks', totalChunks);
+            formData.append('identifier', identifier);
+
+            try {
+                const response = await fetch('/file/chunk', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                document.getElementById('status').innerText = await response.text();
+            } catch (error) {
+                document.getElementById('status').innerText = 'Failed to upload chunk: ' + error.message;
+                break;
+            }
+
+            start = end;
+            end = start + chunkSize;
+            chunkNumber++;
+        }
+    }
+</script>
+</body>
+</html>

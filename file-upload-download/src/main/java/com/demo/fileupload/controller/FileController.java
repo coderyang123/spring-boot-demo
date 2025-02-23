@@ -1,15 +1,22 @@
 package com.demo.fileupload.controller;
 
+import com.demo.fileupload.entity.FileChunk;
 import com.demo.fileupload.util.DateUtils;
 import com.demo.fileupload.util.TftpUtils;
 import java.io.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +35,9 @@ public class FileController {
   /** 文件上传路径 */
   @Value("${spring.servlet.multipart.location}")
   private String uploadPath;
+
+  /** 文件分片 */
+  private final Map<String, FileChunk> FILE_CHUNKS = new HashMap<>();
 
   /**
    * 单文件上传
@@ -279,5 +289,62 @@ public class FileController {
     }
 
     return "【文件下载】成功";
+  }
+
+  /**
+   * 文件分片上传
+   *
+   * @param file 待上传文件
+   * @param chunkNumber 当前分片序号
+   * @param totalChunks 总分片数
+   * @param identifier 文件唯一标识符
+   */
+  @PostMapping("/chunk")
+  public ResponseEntity<String> uploadChunk(
+      @RequestParam("file") MultipartFile file,
+      @RequestParam("chunkNumber") int chunkNumber,
+      @RequestParam("totalChunks") int totalChunks,
+      @RequestParam("identifier") String identifier) {
+    try {
+      FileChunk fileChunk =
+          new FileChunk(file.getOriginalFilename(), chunkNumber, totalChunks, identifier);
+      FILE_CHUNKS.put(identifier + "_" + chunkNumber, fileChunk);
+
+      Path filePath = Paths.get(uploadPath + identifier + "_" + chunkNumber);
+      Files.createDirectories(filePath.getParent());
+      try (FileOutputStream fos = new FileOutputStream(filePath.toFile())) {
+        fos.write(file.getBytes());
+      }
+      if (chunkNumber == totalChunks) {
+        mergeChunks(identifier);
+        return ResponseEntity.ok("File upload completed.");
+      } else {
+        return ResponseEntity.ok("Chunk " + chunkNumber + " uploaded successfully.");
+      }
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body("Failed to upload chunk: " + e.getMessage());
+    }
+  }
+
+  public void mergeChunks(String identifier) throws IOException {
+    FileChunk firstChunk =
+        FILE_CHUNKS.values().stream()
+            .filter(chunk -> chunk.getIdentifier().equals(identifier))
+            .findFirst()
+            .orElseThrow(() -> new IOException("No chunks found for identifier: " + identifier));
+
+    String originalFilename = firstChunk.getOriginalFilename();
+    Path finalFilePath = Paths.get(uploadPath + originalFilename);
+    Files.createDirectories(finalFilePath.getParent());
+
+    try (FileOutputStream fos = new FileOutputStream(finalFilePath.toFile())) {
+      for (int i = 1; i <= firstChunk.getTotalChunks(); i++) {
+        Path chunkPath = Paths.get(uploadPath + identifier + "_" + i);
+        fos.write(Files.readAllBytes(chunkPath));
+        Files.delete(chunkPath);
+      }
+    }
+
+    FILE_CHUNKS.values().removeIf(chunk -> chunk.getIdentifier().equals(identifier));
   }
 }
