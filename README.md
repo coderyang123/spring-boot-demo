@@ -24,7 +24,7 @@
 | [websocket](websocket/README.md)                                             | Spring Boot 集成 websocket，后端主动推送前端当前时间戳                       |
 | [cache-redis](cache-redis/README.md)                                         | Spring Boot 集成 redis，缓存系统参数                                  |
 | [async](async/README.md)                                                     | Spring Boot 使用 Spring 原生提供的异步任务支持，实现异步执行任务                   |                           |
-| [file-upload-download](file-upload-download/README.md)                       | Spring Boot 文件上传下载案例                                         |  
+| [file-upload-download](file-upload-download/README.md)                       | Spring Boot 文件（单个和分片）上传下载案例                                  |  
 | [openfeign](openfeign/README.md)                                             | openfeign 远程调用案例                                             |
 | [guava](guava/README.md)                                                     | guava 工具集使用案例                                                |
 | [all-learning](all-learning/README.md)                                       | Spring Boot 集成 Mybatis-Plus、参数校验、本地缓存、统一异常处理案例               |
