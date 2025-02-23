@@ -1,0 +1,11 @@
+spring:
+  cache:
+    type: redis
+    redis:
+      cache-null-values: true  # 是否缓存空值
+      use-key-prefix: true  # 是否使用Key前缀
+      key-prefix: cache-  # 指定Key前缀
+      time-to-live: 10s  # 缓存存活时长
+  redis:
+    host: IP
+    port: 6379

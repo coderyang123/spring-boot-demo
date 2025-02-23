@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.demo.mybatisplus.mapper.UserMapper">
+    <resultMap id="userInfoVOMap" type="UserInfoBO">
+        <id property="id" column="id"/>
+        <result column="create_time" property="createTime"/>
+        <result column="goods_name" property="goodsName"/>
+    </resultMap>
+
+    <!--单表查询-->
+    <select id="listUser" parameterType="QueryDTO" resultType="UserDO">
+        SELECT * FROM `user`
+        <where>
+            <if test="queryDTO.name != '' and queryDTO.name != null">
+                and name = #{queryDTO.name}
+            </if>
+            <if test="queryDTO.age != '' and queryDTO.age != null">
+                and age = #{queryDTO.age}
+            </if>
+        </where>
+    </select>
+
+    <!--连表查询-->
+    <select id="listUserAndGoods" parameterType="QueryDTO" resultMap="userInfoVOMap">
+        SELECT `user`.`id` AS id, `user`.`create_time` AS create_time, `goods`.`name` AS goods_name FROM `user` LEFT
+        JOIN `goods` ON `user`.`id` =
+        `goods`.`user_id`
+        <where>
+            <if test="queryDTO.name != '' and queryDTO.name != null">
+                and `user`.name = #{queryDTO.name}
+            </if>
+            <if test="queryDTO.age != '' and queryDTO.age != null">
+                and `user`.age = #{queryDTO.age}
+            </if>
+        </where>
+    </select>
+</mapper>

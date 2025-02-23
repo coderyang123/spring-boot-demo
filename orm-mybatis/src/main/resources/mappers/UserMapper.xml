@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mybatis.mapper.UserMapper">
+
+    <!--添加用户信息-->
+    <insert id="insertUser">
+        INSERT INTO t_user
+        VALUES (null, 'admin', '123456', 23, '男', '12345@qq.com')
+    </insert>
+
+    <!--修改用户信息-->
+    <update id="updateUser">
+        UPDATE t_user
+        SET username = 'foo'
+        WHERE id = 4
+    </update>
+
+    <!--删除用户信息-->
+    <delete id="deleteUser">
+        DELETE
+        FROM t_user
+        WHERE id = 5
+    </delete>
+
+    <!--
+        查询功能的标签必须设置resultType或resultMap
+        resultType：设置默认的映射关系
+        resultMap：设置自定义的映射关系
+    -->
+    <!--根据ID查询用户信息-->
+    <select id="getUserById" resultType="com.demo.mybatis.entity.UserDO">
+        SELECT *
+        FROM t_user
+        WHERE id = 3
+    </select>
+
+    <!--查询所有的用户信息-->
+    <select id="getAllUser" resultType="com.demo.mybatis.entity.UserDO">
+        SELECT *
+        FROM t_user
+    </select>
+</mapper>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="druid.driverClassName">com.mysql.jdbc.Driver2</entry>
+    <entry key="druid.url">jdbc:mysql://IP/db1?useUnicode=true&amp;characterEncoding=UTF-82</entry>
+    <entry key="druid.username">root2</entry>
+    <entry key="druid.password">5201314..a2</entry>
+</properties>

@@ -1,0 +1,13 @@
+version: "3.3"
+
+services:
+  apps:
+    container_name: app-v1.0.0
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - /tmp/logs:/application/logs
+    ports:
+      - "8001:8001"
+    restart: always

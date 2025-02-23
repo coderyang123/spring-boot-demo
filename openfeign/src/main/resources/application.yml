@@ -1,0 +1,15 @@
+server:
+  port: 8081
+
+# 远程服务地址
+file-server:
+  ip: 127.0.0.1
+  port: 8080
+
+spring:
+  servlet:
+    multipart:
+      enabled: true # 开启文件上传
+      max-request-size: 200MB # 上传的总文件大小
+      max-file-size: 50MB # 上传的单个文件大小
+

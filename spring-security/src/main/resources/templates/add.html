@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <script src="https://cdn.staticfile.org/jquery/1.12.3/jquery.min.js"></script>
+</head>
+<body>
+
+<form action="/login" method="post">
+    <span>用户名：</span><input id="username" name="username" type="text"/><br>
+    <span>密码：</span><input id="password" name="password" type="password"><br>
+    <span>权限：</span><input id="roles" name="roles" type="text"><br><i>以"ROLE_"开头</i>
+    <input onclick="login()" type="button" value="确定">
+</form>
+<script>
+    function login() {
+        $.ajax({
+            type: "POST",
+            url: "/system/addUser",
+            data: {
+                'username': $("#username").val(),
+                'password': $("#password").val(),
+                'roles': $("#roles").val()
+            },
+            success: function (res) {
+                if (res.code === "1000") {
+                    alert("新增成功！")
+                    location.href = "/system/index"
+                } else {
+                    alert("新增失败！")
+                }
+            }
+        });
+
+    }
+
+</script>
+</body>
+</html>

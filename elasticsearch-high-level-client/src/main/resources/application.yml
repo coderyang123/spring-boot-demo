@@ -1,0 +1,3 @@
+# ES 主机和端口
+elasticsearch:
+  host: IP:9200

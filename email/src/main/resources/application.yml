@@ -1,0 +1,21 @@
+spring:
+  mail:
+    host: smtp.qq.com
+    port: 465
+    username: 1023178796@qq.com
+    # 使用src.main.java.com.demo.email.util.JasyptUtils生成加密密码，替换 ENC(加密密码)
+    password: ENC(GRU1P2w4C59Ysr1d/GrSbR+Zt7KsYx4IktxEWof67HufuzQNmP+DaSYn+5+V0FAVy5n24dPKJgEtAn+uMXKrIA==1)
+    protocol: smtp
+    test-connection: true
+    default-encoding: UTF-8
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
+      mail.smtp.ssl.enable: true
+      mail.display.sendmail: spring-boot-demo
+
+# 为 jasypt 配置解密秘钥
+jasypt:
+  encryptor:
+    password: spring-boot-demo

@@ -1,0 +1,32 @@
+spring:
+  datasource:
+
+    # 数据库连接信息
+    druid:
+      url: jdbc:mysql://IP:3306/druid_test?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+      username: root
+      password: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+      # Druid基础配置
+      initial-size: 10                           # 初始化时建立物理连接的个数
+      max-active: 20                             # 最大连接池数量
+      min-idle: 10                               # 最小连接池数量
+      max-wait: 6000                             # 获取连接时最大等待时间，单位：毫秒
+      time-between-eviction-runs-millis: 5000    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      min-evictable-idle-time-millis: 600000     # 配置一个连接在池中最小生存的时间，单位是毫秒
+      max-evictable-idle-time-millis: 900000     # 配置一个连接在池中最大生存的时间，单位是毫秒
+      validation-query: SELECT 1                 # 用来检测连接是否有效的sql，要求是一个查询语句
+      test-while-idle: true                      # 申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效
+      test-on-borrow: true                       # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+      test-on-return: false                      # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+      validation-query-timeout: 5                # 检测连接是否有效的超时时间，单位：秒
+      filters: stat                              # 通过别名的方式配置扩展插件，常用的插件有：监控统计用的stat 日志用的log4j 防御sql注入的wall
+
+      # Druid监控配置
+      stat-view-servlet:
+        enabled: true                            # 开启监控功能
+        url-pattern: /druid/*                    # 访问地址规则
+        reset-enable: true                       # 是否允许清空统计数据
+        login-username: admin                    # 监控页面的登录账户
+        login-password: admin                    # 监控页面的登录密码

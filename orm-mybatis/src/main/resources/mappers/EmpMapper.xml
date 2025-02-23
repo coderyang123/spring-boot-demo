@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mybatis.mapper.EmpMapper">
+
+    <!--处理多对一映射关系，方式一-->
+    <resultMap id="empDeptMap" type="empDO">
+        <id column="eid" property="eid"/>
+        <result column="emp_name" property="empName"/>
+        <result column="age" property="age"/>
+        <result column="sex" property="sex"/>
+        <result column="did" property="deptDO.did"/>
+        <result column="dept_name" property="deptDO.deptName"/>
+    </resultMap>
+
+    <!--处理多对一映射关系，方式二-->
+    <resultMap id="empDeptMap2" type="empDO">
+        <id column="eid" property="eid"/>
+        <result column="emp_name" property="empName"/>
+        <result column="age" property="age"/>
+        <result column="sex" property="sex"/>
+        <association property="deptDO" javaType="deptDO">
+            <id column="did" property="did"/>
+            <result column="dept_name" property="deptName"/>
+        </association>
+    </resultMap>
+
+    <!--查询员工及其所在部门信息-->
+    <select id="getEmpAndDeptInfo" resultMap="empDeptMap">
+        SELECT emp.*, dept.*
+        FROM t_emp emp
+                 LEFT JOIN t_dept dept ON emp.did = dept.did
+        WHERE emp.eid = #{eid}
+    </select>
+
+    <!--查询员工及其所在部门信息-->
+    <select id="getEmpAndDeptInfo2" resultMap="empDeptMap2">
+        SELECT emp.*, dept.*
+        FROM t_emp emp
+                 LEFT JOIN t_dept dept ON emp.did = dept.did
+        WHERE emp.eid = #{eid}
+    </select>
+</mapper>

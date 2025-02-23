@@ -1,0 +1,14 @@
+test:
+  user:
+    name: tom2
+    age: 2
+    gender: male2
+    other-property: property2
+
+test2:
+  user2:
+    name2: foo2
+
+servers:
+  time: 1
+  size: 10

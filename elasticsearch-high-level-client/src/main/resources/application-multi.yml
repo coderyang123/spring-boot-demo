@@ -1,0 +1,3 @@
+# ES 主机和端口
+elasticsearch:
+  hosts: IP1:9200,IP2:9200,IP3:9200

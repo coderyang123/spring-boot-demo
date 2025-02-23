@@ -1,0 +1,8 @@
+FROM openjdk:11-jre
+WORKDIR /application
+COPY app-1.0.0.jar /application/app.jar
+COPY run.sh /application/run.sh
+VOLUME /application/logs
+EXPOSE 8001
+RUN chmod +x /application/run.sh
+CMD ["sh", "/application/run.sh"]

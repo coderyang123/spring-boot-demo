@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mybatis.mapper.DeptMapper">
+
+    <resultMap id="deptEmpMap" type="DeptDO">
+        <id property="did" column="did"/>
+        <result property="deptName" column="dept_name"/>
+
+        <!--ofType：设置collection标签所处理的集合属性中存储数据的类型-->
+        <collection property="emps" ofType="empDO">
+            <id property="eid" column="eid"/>
+            <result property="empName" column="emp_name"/>
+            <result property="age" column="age"/>
+            <result property="sex" column="sex"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="deptEmpMap2" type="DeptDO2">
+        <id property="did" column="did"/>
+        <result property="deptName" column="dept_name"/>
+
+        <!--ofType：设置collection标签所处理的集合属性中存储数据的类型-->
+        <collection property="empNameList" ofType="string">
+            <result column="emp_name"/>
+        </collection>
+    </resultMap>
+
+    <!--一对多查询-->
+    <select id="getDeptEmpByDid" resultMap="deptEmpMap">
+        SELECT dept.*, emp.*
+        FROM t_dept dept
+                 LEFT JOIN t_emp emp ON dept.did = emp.did
+        WHERE dept.did = #{did}
+    </select>
+
+    <!--一对多查询-只查询一个属性直接封装成List-->
+    <select id="getDeptEmpByDid2" resultMap="deptEmpMap2">
+        SELECT dept.*, emp.emp_name
+        FROM t_dept dept
+                 LEFT JOIN t_emp emp ON dept.did = emp.did
+        WHERE dept.did = #{did}
+    </select>
+</mapper>

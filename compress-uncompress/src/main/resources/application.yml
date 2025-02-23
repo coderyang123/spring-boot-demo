@@ -1,0 +1,9 @@
+# 图片压缩后的输出路径
+image:
+  output:
+    path: /Users/yueyang/Desktop/
+
+# 文件压缩后的压缩包输出路径
+file:
+  output:
+    path: /Users/yueyang/Desktop/

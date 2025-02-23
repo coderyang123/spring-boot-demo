@@ -1,0 +1,7 @@
+# Jetty 配置
+server:
+  jetty:
+    threads:
+      acceptors: 2  # acceptor线程数
+      selectors: 4  # selector线程数
+    max-http-form-post-size: 2048  # put或post方法最大字节数

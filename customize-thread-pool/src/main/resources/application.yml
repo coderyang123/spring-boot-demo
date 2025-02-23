@@ -1,0 +1,4 @@
+thread-pool:
+  core-pool-size: 3
+  maximum-pool-size: 6
+  keep-alive-time: 10

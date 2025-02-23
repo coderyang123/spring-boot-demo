@@ -1,0 +1,10 @@
+test:
+  user:
+    name: tom3
+    age: 3
+    gender: male3
+    other-property: property3
+
+test2:
+  user2:
+    name2: foo3

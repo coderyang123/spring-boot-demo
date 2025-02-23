@@ -1,0 +1,18 @@
+spring:
+  kafka:
+    bootstrap-servers: IP:9093,IP:9094,IP:9095
+    listener:
+      missing-topics-fatal: false
+    producer:
+      retries: 0
+      batch-size: 16384
+      buffer-memory: 33554432
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: demo-group
+      auto-commit-interval: 100
+      enable-auto-commit: true
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer

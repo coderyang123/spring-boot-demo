@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mybatis.mapper.UserMapper2">
+
+    <!--根据用户名查询用户信息-->
+    <select id="getUserByName" resultType="com.demo.mybatis.entity.UserDO">
+        SELECT *
+        FROM t_user
+        WHERE username = #{username}
+    </select>
+
+    <!--根据用户名查询用户信息-->
+    <select id="getUserByNameAndAge" resultType="com.demo.mybatis.entity.UserDO">
+        SELECT *
+        FROM t_user
+        WHERE username = #{username}
+          AND age = #{age}
+    </select>
+
+    <!--根据用户名查询用户信息-->
+    <select id="getUserByNameAndAge2" resultType="com.demo.mybatis.entity.UserDO">
+        SELECT *
+        FROM t_user
+        WHERE username = '${username}'
+          AND age = ${age}
+    </select>
+
+    <!--根据用户名查询用户信息-->
+    <select id="getUserByMap" resultType="com.demo.mybatis.entity.UserDO">
+        SELECT *
+        FROM t_user
+        WHERE username = #{username}
+          AND age = #{age}
+    </select>
+
+    <!--根据用户名查询用户信息-->
+    <select id="getUserByObject" resultType="com.demo.mybatis.entity.UserDO">
+        SELECT *
+        FROM t_user
+        WHERE username = #{username}
+          AND age = #{age}
+    </select>
+</mapper>

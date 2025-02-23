@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mybatis.mapper.DynamicMapper">
+
+    <sql id="empColumns">
+        t_emp
+        .
+        *
+    </sql>
+
+    <select id="getEmpListByMore" resultType="empDO">
+        SELECT * FROM t_emp WHERE 1=1
+        <if test="empName != '' and empName != null">
+            AND emp_name = #{empName}
+        </if>
+        <if test="age != '' and age != null">
+            AND age = #{age}
+        </if>
+        <if test="sex != '' and sex != null">
+            AND sex = #{sex}
+        </if>
+    </select>
+
+    <select id="getEmpListByMore2" resultType="empDO">
+        SELECT * FROM t_emp
+        <where>
+            <if test="empName != '' and empName != null">
+                AND emp_name = #{empName}
+            </if>
+            <if test="age != '' and age != null">
+                AND age = #{age}
+            </if>
+            <if test="sex != '' and sex != null">
+                AND sex = #{sex}
+            </if>
+        </where>
+    </select>
+
+    <!--
+      trim用于去掉或添加标签中的内容
+      常用属性：
+      prefix：在trim标签中的内容的前面添加某些内容
+      prefixOverrides：在trim标签中的内容的前面去掉某些内容
+      suffix：在trim标签中的内容的后面添加某些内容
+      suffixOverrides：在trim标签中的内容的后面去掉某些内容
+    -->
+    <select id="getEmpListByMore3" resultType="empDO">
+        SELECT * FROM t_emp
+        <trim prefix="where" suffixOverrides="and">
+            <if test="empName != '' and empName != null">
+                emp_name = #{empName} AND
+            </if>
+            <if test="age != '' and age != null">
+                age = #{age} AND
+            </if>
+            <if test="sex != '' and sex != null">
+                sex = #{sex}
+            </if>
+        </trim>
+    </select>
+
+    <!--choose、when、otherwise表示从多个when条件里匹配第一个满足的条件就结束匹配-->
+    <select id="getEmpListByChoose" resultType="empDO">
+        SELECT
+        <include refid="empColumns"/>
+        FROM t_emp
+        <where>
+            <choose>
+                <when test="empName != '' and empName != null">
+                    emp_name = #{empName}
+                </when>
+                <when test="age != '' and age != null">
+                    age = #{age}
+                </when>
+                <when test="sex != '' and sex != null">
+                    sex = #{sex}
+                </when>
+                <when test="email != '' and email != null">
+                    email = #{email}
+                </when>
+            </choose>
+        </where>
+    </select>
+
+    <!--单个新增（校验每个参数）-->
+    <insert id="insertEmp">
+        INSERT INTO t_emp
+        (
+        <if test="eid != null and eid != 0">eid,</if>
+        <if test="empName != null and empName != ''">emp_name,</if>
+        <if test="age != null and age != 0">age,</if>
+        <if test="email != null and email != ''">email,</if>
+        <if test="sex != null and sex != ''">sex</if>
+        )
+        VALUES
+        (
+        <if test="eid != null and eid != 0">#{eid},</if>
+        <if test="empName != null and empName != ''">#{empName},</if>
+        <if test="age != null and age != 0">#{age},</if>
+        <if test="email != null and email != ''">#{email},</if>
+        <if test="sex != null and sex != ''">#{sex}</if>
+        )
+    </insert>
+
+    <!--
+      属性：
+      collection：设置要循环的数组或集合
+      item：表示集合或数组中的每一个数据
+      separator：设置循环体之间的分隔符
+      open：设置foreach标签中的内容的开始符
+      close：设置foreach标签中的内容的结束符
+    -->
+    <!--批量新增-->
+    <insert id="insertMoreEmp">
+        INSERT INTO t_emp VALUES
+        <foreach collection="empDOList" item="emp" separator=",">
+            (#{emp.eid}, #{emp.empName}, #{emp.age}, #{emp.email}, #{emp.sex}, #{emp.deptDO.did})
+        </foreach>
+    </insert>
+
+    <!--批量删除，方式一-->
+    <delete id="deleteMoreByArray">
+        DELETE FROM t_emp WHERE
+        <foreach collection="eids" item="eid" separator="or">
+            eid = #{eid}
+        </foreach>
+    </delete>
+
+    <!--批量删除，方式二-->
+    <delete id="deleteMoreByArray2">
+        DELETE FROM t_emp WHERE eid IN
+        <foreach collection="eids" item="eid" separator="," open="(" close=")">
+            #{eid}
+        </foreach>
+    </delete>
+</mapper>

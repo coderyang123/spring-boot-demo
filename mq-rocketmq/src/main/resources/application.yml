@@ -1,0 +1,4 @@
+rocketmq:
+  name-server: IP:9876
+  producer:
+    group: group-rocketmq

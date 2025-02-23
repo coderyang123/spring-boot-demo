@@ -1,0 +1,10 @@
+spring:
+  redis:
+    host: IP
+    port: 6379
+    password: root@123456
+    client-type: lettuce
+    lettuce:
+      pool:
+        enabled: true
+        max-active: 16

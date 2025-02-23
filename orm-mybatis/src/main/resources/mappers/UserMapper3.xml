@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mybatis.mapper.UserMapper3">
+
+    <!--
+      resultMap：设置自定义映射
+      属性：
+      id：表示自定义映射的唯一标识
+      type：查询的数据要映射的实体类的类型
+      子标签：
+      id：设置主键的映射关系
+      result：设置普通字段的映射关系
+      association：设置多对一的映射关系
+      collection：设置一对多的映射关系
+      属性：
+      property：设置映射关系中实体类中的属性名
+      column：设置映射关系中表中的字段名
+    -->
+    <resultMap id="userResultMap" type="userDO">
+        <!--id属性设置ID的映射关系-->
+        <id property="id" column="id"/>
+
+        <!--result属性设置普通属性的映射关系-->
+        <result property="age" column="age"/>
+        <result property="sex" column="sex"/>
+        <result property="email" column="email"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+    </resultMap>
+
+    <!--根据ID查询用户信息-->
+    <select id="getUserById" resultType="com.demo.mybatis.entity.UserDO">
+        SELECT *
+        FROM t_user
+        WHERE id = 3
+    </select>
+
+    <!--查询所有用户信息-->
+    <select id="getUserList" resultType="UserDO">
+        SELECT *
+        FROM t_user
+    </select>
+
+    <!--查询用户的总记录数-->
+    <select id="getCount" resultType="int">
+        SELECT count(id)
+        FROM t_user
+    </select>
+
+    <!--根据用户ID查询用户信息为map集合-->
+    <select id="getUserToMap" resultType="map">
+        SELECT *
+        FROM t_user
+        WHERE id = #{id}
+    </select>
+
+    <!--查询所有用户信息为map集合，方式一-->
+    <select id="getAllUserToMap" resultType="map">
+        SELECT *
+        FROM t_user
+    </select>
+
+    <!--查询所有用户信息为map集合，方式二-->
+    <select id="getAllUserToMap2" resultType="map">
+        SELECT *
+        FROM t_user
+    </select>
+
+    <!--模糊查询所有用户信息（方式一）-->
+    <select id="getUserListByName" resultType="UserDO">
+        SELECT *
+        FROM t_user
+        WHERE username LIKE '%${username}%'
+    </select>
+
+    <!--模糊查询所有用户信息（方式二）-->
+    <select id="getUserListByName2" resultType="UserDO">
+        SELECT *
+        FROM t_user
+        WHERE username LIKE "%"#{username}"%"
+    </select>
+
+    <!--根据ID查询用户信息（自定义映射关系）-->
+    <select id="getUserById2" resultMap="userResultMap">
+        SELECT *
+        FROM t_user
+        WHERE id = 3
+    </select>
+</mapper>
