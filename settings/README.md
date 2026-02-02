@@ -73,7 +73,7 @@ public class ${NAME} {
 
 ## 2.10 控制台字体颜色
 
-`21D86E`
+`21D86E` `CE5153`
 ![](picture/color.png)
 
 # 🛠️ 3.项目配置 File -> Settings
